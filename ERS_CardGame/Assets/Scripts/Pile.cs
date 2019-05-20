@@ -21,7 +21,7 @@ public class Pile
             pile.RemoveAt(0);
         }
     }
-    public bool ValidSlap()
+    public static bool ValidSlap()
     {
         if (pile.Count < 2) return false;
         if (pile[pile.Count - 1].value == pile[pile.Count - 2].value || pile[pile.Count - 1].value == pile[pile.Count - 3].value) return true;

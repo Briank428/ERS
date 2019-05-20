@@ -24,11 +24,6 @@ public class GameManager : MonoBehaviour
         players = new List<AI>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void StartGame() {
         Debug.Log("Number of Opponents: " + numPlayers);
         for (int i = 0; i< numPlayers; i++)
