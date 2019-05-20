@@ -1065,6 +1065,8 @@ MonoBehaviour:
   one: {fileID: 1271418070}
   two: {fileID: 1232844681}
   three: {fileID: 79306559}
+  prefabAI: {fileID: 8149255686413045170, guid: 2e22ab2d4bb758c4ba0d600bf4b00180,
+    type: 3}
 --- !u!4 &1737161902
 Transform:
   m_ObjectHideFlags: 0

@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Canvas canvas;
     public Button one;
     public Button two;
     public Button three;
+    public Text playerText;
+    public Text text;
     public AI prefabAI;
 
     private int numPlayers;
@@ -38,17 +39,17 @@ public class GameManager : MonoBehaviour
     #region start
     public void StartGameOne() {
         numPlayers = 1;
-        canvas.gameObject.SetActive(false);
+        one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
     public void StartGameTwo() {
         numPlayers = 2;
-        canvas.gameObject.SetActive(false);
+        one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
     public void StartGameThree() {
         numPlayers = 3;
-        canvas.gameObject.SetActive(false);
+        one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
     #endregion
