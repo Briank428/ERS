@@ -12,12 +12,6 @@ public class AI : MonoBehaviour
         hand = new Queue<Card>(); empty = false;
     }
 
-    void Update()
-    {
-        if (hand.Count == 0) empty = true;
-        else empty = false;
-    }
-
     public double CheckSlap()
     {
         if (Pile.ValidSlap()) return Random.Range(0f, 3f);
@@ -27,6 +21,11 @@ public class AI : MonoBehaviour
     public void PlayCard()
     {
         Pile.AddToTop(hand.Dequeue());
+    }
+    public void IsEmpty()
+    {
+        if (hand.Count == 0) empty = true;
+        else empty = false;
     }
 
     public void SetHand(Queue<Card> cards) { hand = cards; }
