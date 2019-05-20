@@ -14,7 +14,7 @@ public class AI : MonoBehaviour
 
     public double CheckSlap()
     {
-        if (Pile.ValidSlap()) return Random.Range(0f, 3f);
+        if (Pile.ValidSlap()) return Random.Range(0.5f, 2f);
         return -1.0;
     }
 
