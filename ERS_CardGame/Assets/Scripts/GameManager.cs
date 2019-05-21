@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +29,21 @@ public class GameManager : MonoBehaviour
         {
             players.Add(GameObject.Instantiate(prefabAI) as AI);
         }
+        List<Card> deck = new List<Card>();
+        foreach(string s in Card.suits)
+        {
+            for(int i = 1; i <= 14; i++)
+            {
+                deck.Add(new Card(i,s));
+            }
+        }
+        Helper.Shuffle(deck);
+        while(deck.Count > 0)
+        {
+            // for every player, try to enque card from deck
+        }
     }
+   
     #region start
     public void StartGameOne() {
         numPlayers = 1;

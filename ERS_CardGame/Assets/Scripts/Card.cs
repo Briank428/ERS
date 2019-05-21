@@ -1,20 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Card : MonoBehaviour
+﻿public class Card
 {
     public int value;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string suit;
 
-    // Update is called once per frame
-    void Update()
+    public static string[] suits =
     {
-        
+        "CLUBS",
+        "HEARTS",
+        "SPADES",
+        "DIAMONDS"
+    };
+    
+    public Card(int v, string s)
+    {
+        value = v;
+        suit = s;
     }
     public bool IsFaceCard()
     {
