@@ -4,14 +4,8 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    private Queue<Card> hand;
+    private Queue<Card> hand = new Queue<Card>();
     public bool empty;
- 
-    void Start()
-    {
-        hand = new Queue<Card>(); empty = false;
-    }
-
     public double CheckSlap()
     {
         if (Pile.ValidSlap()) return Random.Range(0.5f, 2f);
@@ -27,7 +21,7 @@ public class AI : MonoBehaviour
         if (hand.Count == 0) empty = true;
         else empty = false;
     }
-
-    public void SetHand(Queue<Card> cards) { hand = cards; }
     public void AddCard(Card a) { hand.Enqueue(a); }
+    public void AddToHand() { Pile.PickUp(hand);  }
+    public int HandSize() { return hand.Count; }
 }

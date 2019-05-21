@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     public Text text;
     public AI prefabAI;
 
+    private int numOpponents;
     private int numPlayers;
     private List<AI> players;
+    private Player player;
 
     // Start is called before the first frame update
     void Start()
@@ -21,42 +23,51 @@ public class GameManager : MonoBehaviour
         two.onClick.AddListener(StartGameTwo);
         three.onClick.AddListener(StartGameThree);
         players = new List<AI>();
+        player = GameObject.Find("Player").GetComponent<Player>();
     }
 
     public void StartGame() {
-        Debug.Log("Number of Opponents: " + numPlayers);
-        for (int i = 0; i< numPlayers; i++)
+        Debug.Log("Number of Opponents: " + numOpponents);
+        for (int i =0; i< numOpponents; i++)
         {
-            players.Add(GameObject.Instantiate(prefabAI) as AI);
+            players.Add(Instantiate(prefabAI) as AI);
         }
         List<Card> deck = new List<Card>();
         foreach(string s in Card.suits)
         {
-            for(int i = 1; i <= 14; i++)
+            for(int i = 1; i < 14; i++)
             {
                 deck.Add(new Card(i,s));
             }
         }
         Helper.Shuffle(deck);
+        int index = 0;
         while(deck.Count > 0)
         {
-            // for every player, try to enque card from deck
+            {
+                if (index != numOpponents) { players[index].AddCard(deck[0]); index++; }
+                else { player.AddCard(deck[0]); index = 0; }
+                deck.RemoveAt(0);
+            }
         }
+        Debug.Log("PLAYER: " + player.HandSize());
+        for (int i = 0; i < numOpponents; i++)
+            Debug.Log("OPPONENT " + i + ": " + players[i].HandSize());
     }
    
     #region start
     public void StartGameOne() {
-        numPlayers = 1;
+        numOpponents = 1; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
     public void StartGameTwo() {
-        numPlayers = 2;
+        numOpponents = 2; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
     public void StartGameThree() {
-        numPlayers = 3;
+        numOpponents = 3; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
         StartGame();
     }
