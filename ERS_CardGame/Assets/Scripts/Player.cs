@@ -10,11 +10,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space)) Slap();
-        if (hand.Count != 0 && isTurn && Input.GetKeyDown(KeyCode.Mouse0)) Pile.AddToTop(hand.Dequeue()); 
-
+        if (hand.Count != 0 && isTurn && Input.GetKeyDown(KeyCode.Mouse0)) { Pile.AddToTop(hand.Dequeue()); isTurn = false; }
     }
 
-    public void Slap() { }
+    public void Slap() {
+        if (Pile.ValidSlap()) Pile.PickUp(hand);
+    }
     public void AddCard(Card a) { hand.Enqueue(a); }
     public void AddToHand() { Pile.PickUp(hand); }
     public int HandSize() { return hand.Count; }

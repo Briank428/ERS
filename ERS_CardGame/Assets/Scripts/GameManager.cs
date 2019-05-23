@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    #region vars
     public Button one;
     public Button two;
     public Button three;
@@ -15,6 +16,8 @@ public class GameManager : MonoBehaviour
     private int numPlayers;
     private List<AI> players;
     private Player player;
+    private bool isOver;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +27,7 @@ public class GameManager : MonoBehaviour
         three.onClick.AddListener(StartGameThree);
         players = new List<AI>();
         player = GameObject.Find("Player").GetComponent<Player>();
+        isOver = false;
     }
 
     public void StartGame() {
@@ -50,9 +54,14 @@ public class GameManager : MonoBehaviour
                 deck.RemoveAt(0);
             }
         }
-        Debug.Log("PLAYER: " + player.HandSize());
-        for (int i = 0; i < numOpponents; i++)
-            Debug.Log("OPPONENT " + i + ": " + players[i].HandSize());
+        while (!isOver)
+        {
+            for (int i = 0; i< numPlayers; i++)
+            {
+                if (i == numPlayers - 1) player.isTurn = true;
+                else players[i].PlayCard();
+            }
+        }
     }
    
     #region start

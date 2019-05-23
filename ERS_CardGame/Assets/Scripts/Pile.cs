@@ -5,7 +5,7 @@ public class Pile
     private static List<Card> pile = new List<Card>();
     private static Card topCard;
 
-    public static void AddToTop(Card a) {
+    public static void AddToTop(Card a) { 
         pile.Add(a);
         topCard = a;
     }
