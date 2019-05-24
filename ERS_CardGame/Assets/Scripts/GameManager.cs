@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
         isOver = false;
     }
 
-    public void StartGame() {
+    public void Deal() {
         Debug.Log("Number of Opponents: " + numOpponents);
         for (int i =0; i< numOpponents; i++)
         {
@@ -54,31 +54,26 @@ public class GameManager : MonoBehaviour
                 deck.RemoveAt(0);
             }
         }
-        while (!isOver)
-        {
-            for (int i = 0; i< numPlayers; i++)
-            {
-                if (i == numPlayers - 1) player.isTurn = true;
-                else players[i].PlayCard();
-            }
-        }
+        Debug.Log("Player: " + player.HandSize()); for (int i = 0; i < numOpponents; i++) Debug.Log("Opponent " + i + 1 + ": " + players[i].HandSize());
     }
    
+    
+
     #region start
     public void StartGameOne() {
         numOpponents = 1; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
-        StartGame();
+        Deal();
     }
     public void StartGameTwo() {
         numOpponents = 2; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
-        StartGame();
+        Deal();
     }
     public void StartGameThree() {
         numOpponents = 3; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
-        StartGame();
+        Deal();
     }
     #endregion
 }
