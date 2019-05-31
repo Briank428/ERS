@@ -4,9 +4,10 @@ public class Card : MonoBehaviour
 {
     public int value;
     public string suit;
-    public Transform pilePosition, handPosition, currentPos;
+    public Transform pilePosition, handPosition, currentPos, oldPos;
 
     private float speed;
+    private Rigidbody2D rb;
 
     public static string[] suits =
     {
@@ -20,7 +21,9 @@ public class Card : MonoBehaviour
     {
         value = v;
         suit = s;
+        rb = GetComponent<Rigidbody2D>();
         currentPos = pilePosition;
+        oldPos = null;
     }
     public bool IsFaceCard()
     {
@@ -33,10 +36,13 @@ public class Card : MonoBehaviour
     }
     public void SetPosition(Transform t)
     {
+        oldPos = currentPos;
         currentPos = t;
-        Transform oldPos = pilePosition;
-        if (currentPos == pilePosition) oldPos = handPosition;
-        Move()
+        Move();
     }
 
+    public IEnumerator Move()
+    {
+
+    }
 }
