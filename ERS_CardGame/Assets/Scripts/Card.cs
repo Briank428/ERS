@@ -5,7 +5,7 @@ public class Card : MonoBehaviour
     public int value;
     public string suit;
     public Transform pilePosition, handPosition, currentPos, oldPos;
-
+    public static Sprite back;
     private float speed;
     private Rigidbody2D rb;
 
@@ -43,6 +43,6 @@ public class Card : MonoBehaviour
 
     public IEnumerator Move()
     {
-
+        yield return null;
     }
 }
