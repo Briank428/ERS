@@ -6,7 +6,7 @@ public class AI : MonoBehaviour
 {
     private Queue<Card> hand = new Queue<Card>();
     public bool empty;
-    public float CheckSlap()
+    public float SlapTime()
     {
         if (Pile.ValidSlap()) return Random.Range(0.5f, 2f);
         return -1.0f;

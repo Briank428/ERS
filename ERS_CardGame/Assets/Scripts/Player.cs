@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) Slap();
+        if (Input.GetKeyDown(KeyCode.Space)) { Slap(); }
         if (hand.Count >  0 && isTurn && Input.GetKeyDown(KeyCode.Mouse0)) {
             Card temp = hand.Dequeue();
             /*flip (where sets timePlayed) and move temp*/

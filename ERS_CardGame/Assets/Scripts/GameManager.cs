@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject cardPrefab;
     public float timePlayed;
 
+    private int faceCardIndex;
     private int numOpponents;
     private int numPlayers;
     private List<AI> players;
@@ -75,19 +76,44 @@ public class GameManager : MonoBehaviour
                     player.isTurn = true; Debug.Log("Player turn");
                     while (!Input.GetKeyDown(KeyCode.Mouse0))
                         yield return null;
-                    Debug.Log("You played"); }
-                else { yield return new WaitForSeconds(1.5f); players[i].PlayCard(); Debug.Log("Opponent played");  }
-                Debug.Log("Player #" + i+ "'s Value: " + Pile.GetTopCard().value + "Suit: " + Pile.GetTopCard().suit);
-                //Card temp = Pile.GetTopCard();
-                //if (temp.IsFaceCard()) FaceCard(temp, i);
+                    }
+                else { yield return new WaitForSeconds(1.5f); players[i].PlayCard(); }
+                Debug.Log("Player #" + i+ "'s Value: " + Pile.GetTopCard().value);
+                Card temp = Pile.GetTopCard();
+
+
+                if (Pile.ValidSlap()) { 
+                    //find minimum time of AI
+                    float minAI = players[0].SlapTime(); int lowest = 0;
+                    for (int j = 1; j < numPlayers-1; j++) {
+                        float tempSlap = players[j].SlapTime();
+                        if (minAI > tempSlap) { minAI = tempSlap; lowest = j; }
+                    }
+                    //Compare to player (wait until have played?)
+                    if (minAI < player.slapTime - timePlayed) { players[lowest].AddToHand(); /*animation? */ text.text = "Player " + 1 + lowest + " slapped first!"; i = lowest - 1; }
+                    else { player.AddToHand(); /*animation?*/ text.text = "You slapped first!"; i = numPlayers - 2; }
+
+                    continue;
+                }
+                if (temp.IsFaceCard()) { FaceCard(temp, i); i = faceCardIndex; }
             }   
         }   
     }   
 
     public IEnumerator FaceCard(Card a, int index) {
+        if (index == numPlayers - 1) index = 0; else index++;
         if (a.value == 11) {
-            if (index == numPlayers - 1) { player.isTurn = true; yield return new WaitUntil(() => player.HandSize() == player.HandSize() - 1); }
+            if (index == numPlayers - 1) { player.isTurn = true; while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
+                if (Pile.GetTopCard().IsFaceCard()) FaceCard(Pile.GetTopCard(), index); 
+            }
+            else { players[index].PlayCard(); if (Pile.GetTopCard().IsFaceCard()) FaceCard(Pile.GetTopCard(), index); }
         }
+        else if (a.value == 12)
+        {
+
+        }
+
+        //faceCardIndex = num-1 of index 
     }
 
     #region start

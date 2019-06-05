@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Pile
 {
@@ -24,7 +25,8 @@ public class Pile
     public static bool ValidSlap()
     {
         if (pile.Count < 2) return false;
-        if (pile[pile.Count - 1].value == pile[pile.Count - 2].value || pile[pile.Count - 1].value == pile[pile.Count - 3].value) return true;
+        if (pile.Count >= 2 && pile[pile.Count - 1].value == pile[pile.Count - 2].value) return true;
+        if (pile.Count >=3 && pile[pile.Count - 1].value == pile[pile.Count - 3].value) return true;
         return false;
     }
     public static Card GetTopCard() { return topCard; }
