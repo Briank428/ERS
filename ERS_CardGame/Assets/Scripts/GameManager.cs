@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Text text;
     public AI prefabAI;
     public GameObject cardPrefab;
+    public float timePlayed;
 
     private int numOpponents;
     private int numPlayers;

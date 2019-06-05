@@ -43,6 +43,6 @@ public class Card : MonoBehaviour
 
     public IEnumerator Move()
     {
-
+        
     }
 }
