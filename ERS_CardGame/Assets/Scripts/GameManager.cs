@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +12,14 @@ public class GameManager : MonoBehaviour
     public Text playerText;
     public Text text;
     public AI prefabAI;
+    public GameObject cardPrefab;
 
     private int numOpponents;
     private int numPlayers;
     private List<AI> players;
     private Player player;
     private bool isOver;
+    
     #endregion
 
     // Start is called before the first frame update
@@ -41,7 +44,9 @@ public class GameManager : MonoBehaviour
         {
             for(int i = 1; i < 14; i++)
             {
-                deck.Add(new Card(i,s));
+                GameObject temp = Instantiate(cardPrefab);
+                temp.GetComponent<Card>().CardInit(i,s);
+                deck.Add(temp.GetComponent<Card>());
             }
         }
         Helper.Shuffle(deck);
@@ -55,9 +60,34 @@ public class GameManager : MonoBehaviour
             }
         }
         Debug.Log("Player: " + player.HandSize()); for (int i = 0; i < numOpponents; i++) Debug.Log("Opponent " + i + 1 + ": " + players[i].HandSize());
+        StartCoroutine(Game());
     }
-   
-    
+
+    public IEnumerator Game()
+    {
+        Debug.Log("Game started");
+        while (!isOver)
+        {
+            for (int i = 0; i < numPlayers; i++)
+            {
+                if (i == numPlayers - 1) {
+                    player.isTurn = true; Debug.Log("Player turn");
+                    while (!Input.GetKeyDown(KeyCode.Mouse0))
+                        yield return null;
+                    Debug.Log("You played"); }
+                else { yield return new WaitForSeconds(1.5f); players[i].PlayCard(); Debug.Log("Opponent played");  }
+                Debug.Log("Player #" + i+ "'s Value: " + Pile.GetTopCard().value + "Suit: " + Pile.GetTopCard().suit);
+                //Card temp = Pile.GetTopCard();
+                //if (temp.IsFaceCard()) FaceCard(temp, i);
+            }   
+        }   
+    }   
+
+    public IEnumerator FaceCard(Card a, int index) {
+        if (a.value == 11) {
+            if (index == numPlayers - 1) { player.isTurn = true; yield return new WaitUntil(() => player.HandSize() == player.HandSize() - 1); }
+        }
+    }
 
     #region start
     public void StartGameOne() {

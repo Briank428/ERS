@@ -27,5 +27,5 @@ public class Pile
         if (pile[pile.Count - 1].value == pile[pile.Count - 2].value || pile[pile.Count - 1].value == pile[pile.Count - 3].value) return true;
         return false;
     }
-    public Card GetTopCard() { return topCard; }
+    public static Card GetTopCard() { return topCard; }
 }
