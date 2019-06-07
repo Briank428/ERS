@@ -4,7 +4,8 @@ public class Card : MonoBehaviour
 {
     public int value;
     public string suit;
-    public Transform pilePosition, handPosition, currentPos, oldPos;
+    public Transform handPosition, currentPos, oldPos;
+    public static Transform pilePosition;
     public static Sprite back;
     private float speed;
     private Rigidbody2D rb;
@@ -17,13 +18,10 @@ public class Card : MonoBehaviour
         "DIAMONDS"
     };
     
-    public void CardInit(int v, string s)
+    void Start()
     {
-        value = v;
-        suit = s;
         rb = GetComponent<Rigidbody2D>();
-        currentPos = pilePosition;
-        oldPos = null;
+        currentPos = null;
     }
     public bool IsFaceCard()
     {
@@ -33,6 +31,12 @@ public class Card : MonoBehaviour
     public void SetPlayerPos(Transform t)
     {
         handPosition = t;
+        SetPosition(handPosition);
+    }
+    void SetPilePos(Transform t)
+    {
+        pilePosition = t;
+        SetPosition(t);
     }
     public void SetPosition(Transform t)
     {

@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     public AI prefabAI;
     public GameObject cardPrefab;
     public float timePlayed;
+    [SerializeField]
+    public List<Card> deck;
+    public Transform pilePos;
 
     private int faceCardIndex;
     private int numOpponents;
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
         players = new List<AI>();
         player = GameObject.Find("Player").GetComponent<Player>();
         isOver = false;
+        Card.pilePosition = pilePos;
     }
 
     public void Deal() {
@@ -41,23 +45,14 @@ public class GameManager : MonoBehaviour
         {
             players.Add(Instantiate(prefabAI) as AI);
         }
-        List<Card> deck = new List<Card>();
-        foreach(string s in Card.suits)
-        {
-            for(int i = 1; i < 14; i++)
-            {
-                GameObject temp = Instantiate(cardPrefab);
-                temp.GetComponent<Card>().CardInit(i,s);
-                deck.Add(temp.GetComponent<Card>());
-            }
-        }
         Helper.Shuffle(deck);
         int index = 0;
         while(deck.Count > 0)
         {
             {
-                if (index != numOpponents) { players[index].AddCard(deck[0]); index++; }
-                else { player.AddCard(deck[0]); index = 0; }
+                Card temp = deck[0];
+                if (index != numOpponents) { players[index].AddCard(temp); temp.SetPlayerPos(players[index].transform); index++; }
+                else { player.AddCard(temp); temp.SetPlayerPos(player.transform); index = 0; }
                 deck.RemoveAt(0);
             }
         }
@@ -95,7 +90,7 @@ public class GameManager : MonoBehaviour
 
                     continue;
                 }
-                if (temp.IsFaceCard()) { FaceCard(temp, i); i = faceCardIndex; }
+                //if (temp.IsFaceCard()) { FaceCard(temp, i); i = faceCardIndex; }
             }   
         }   
     }   
