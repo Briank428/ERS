@@ -16,7 +16,9 @@ public class GameManager : MonoBehaviour
     public float timePlayed;
     [SerializeField]
     public List<Card> deck;
-    public Transform pilePos;
+    public GameObject cardTable;
+
+    public Sprite back;
 
     private int faceCardIndex;
     private int numOpponents;
@@ -36,15 +38,12 @@ public class GameManager : MonoBehaviour
         players = new List<AI>();
         player = GameObject.Find("Player").GetComponent<Player>();
         isOver = false;
-        Card.pilePosition = pilePos;
+        Card.pilePosition = GameObject.Find("Pile").transform;
+        cardTable.SetActive(false);
     }
 
     public void Deal() {
         Debug.Log("Number of Opponents: " + numOpponents);
-        for (int i =0; i< numOpponents; i++)
-        {
-            players.Add(Instantiate(prefabAI) as AI);
-        }
         Helper.Shuffle(deck);
         int index = 0;
         while(deck.Count > 0)
@@ -115,16 +114,30 @@ public class GameManager : MonoBehaviour
     public void StartGameOne() {
         numOpponents = 1; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        cardTable.SetActive(true);
+        players.Add(GameObject.Find("Two Person").GetComponent<AI>());
+        Destroy(GameObject.Find("Three Person"));
+        Destroy(GameObject.Find("Four Person"));
         Deal();
     }
     public void StartGameTwo() {
         numOpponents = 2; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        cardTable.SetActive(true);
+        Destroy(GameObject.Find("Two Person"));
+        Destroy(GameObject.Find("Four Person"));
+        players.Add(GameObject.Find("3 Players - 1").GetComponent<AI>());
+        players.Add(GameObject.Find("3 Players - 2").GetComponent<AI>());
         Deal();
     }
     public void StartGameThree() {
         numOpponents = 3; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        cardTable.SetActive(true);
+        Destroy(GameObject.Find("Three Person"));
+        players.Add(GameObject.Find("4 Players - 1").GetComponent<AI>());
+        players.Add(GameObject.Find("Two Person").GetComponent<AI>());
+        players.Add(GameObject.Find("4 Players - 3").GetComponent<AI>());
         Deal();
     }
     #endregion
