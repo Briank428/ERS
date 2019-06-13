@@ -15,9 +15,9 @@ public class GameManager : MonoBehaviour
     public GameObject cardPrefab;
     public float timePlayed;
     [SerializeField]
-    public List<Card> deck;
+    public List<Card> deckPrefab;
     public GameObject cardTable;
-
+    public static GameManager instance;
     public Sprite back;
 
     private int faceCardIndex;
@@ -26,12 +26,13 @@ public class GameManager : MonoBehaviour
     private List<AI> players;
     private Player player;
     private bool isOver;
-    
+    private List<Card> deck;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         one.onClick.AddListener(StartGameOne);
         two.onClick.AddListener(StartGameTwo);
         three.onClick.AddListener(StartGameThree);
@@ -44,6 +45,12 @@ public class GameManager : MonoBehaviour
 
     public void Deal() {
         Debug.Log("Number of Opponents: " + numOpponents);
+        deck = new List<Card>();
+        foreach(Card c in deckPrefab)
+        {
+            Card temp = Instantiate(c);
+            deck.Add(temp);
+        }
         Helper.Shuffle(deck);
         int index = 0;
         while(deck.Count > 0)

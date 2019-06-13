@@ -16,7 +16,7 @@ public class Card : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         front = GetComponent<SpriteRenderer>().sprite;  
-        back = GameManager.back;
+        back = GameManager.instance.back;
         currentPos = null;
         currentSprite = GetComponent<SpriteRenderer>();
         currentSprite.sprite = back;
@@ -24,7 +24,9 @@ public class Card : MonoBehaviour
 
     public void Flip()
     {
-        //flip 90, switch sprite, flip back
+        if (currentSprite.sprite == back) currentSprite.sprite = front;
+        if (currentSprite.sprite == front) currentSprite.sprite = back;
+
     }
     public bool IsFaceCard()
     {
@@ -48,8 +50,9 @@ public class Card : MonoBehaviour
         Move();
     }
 
-    public IEnumerator Move()
+    public void Move()
     {
-        yield return null;
+
+        transform.position = currentPos.position;
     }
 }
