@@ -15,24 +15,23 @@ public class GameManager : MonoBehaviour
     public GameObject cardPrefab;
     public float timePlayed;
     [SerializeField]
-    public List<Card> deckPrefab;
+    public List<Card> deck;
     public GameObject cardTable;
-    public static GameManager instance;
-    public Sprite back;
 
     private int faceCardIndex;
+    private int faceCardValue;
+    private bool basecase;
+
     private int numOpponents;
     private int numPlayers;
     private List<AI> players;
     private Player player;
     private bool isOver;
-    private List<Card> deck;
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
         one.onClick.AddListener(StartGameOne);
         two.onClick.AddListener(StartGameTwo);
         three.onClick.AddListener(StartGameThree);
@@ -44,13 +43,6 @@ public class GameManager : MonoBehaviour
     }
 
     public void Deal() {
-        Debug.Log("Number of Opponents: " + numOpponents);
-        deck = new List<Card>();
-        foreach(Card c in deckPrefab)
-        {
-            Card temp = Instantiate(c);
-            deck.Add(temp);
-        }
         Helper.Shuffle(deck);
         int index = 0;
         while(deck.Count > 0)
@@ -96,25 +88,38 @@ public class GameManager : MonoBehaviour
 
                     continue;
                 }
-                //if (temp.IsFaceCard()) { FaceCard(temp, i); i = faceCardIndex; }
+                //if (temp.IsFaceCard()) { faceCardIndex = i; faceCardValue = temp.value;  yield return StartCoroutine("FaceCard"); i = faceCardIndex; }
             }   
         }   
     }   
 
-    public IEnumerator FaceCard(Card a, int index) {
-        if (index == numPlayers - 1) index = 0; else index++;
-        if (a.value == 11) {
-            if (index == numPlayers - 1) { player.isTurn = true; while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
-                if (Pile.GetTopCard().IsFaceCard()) FaceCard(Pile.GetTopCard(), index); 
+    public IEnumerator FaceCard() {
+        basecase = false;
+        int index;
+        if (faceCardIndex == numPlayers - 1) index = 0; else index = faceCardIndex++;
+        if (faceCardValue == 11) {
+            if (index == numPlayers - 1)
+            {
+                player.isTurn = true;
+                while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
+                if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); }
+                else basecase = true;
             }
-            else { players[index].PlayCard(); if (Pile.GetTopCard().IsFaceCard()) FaceCard(Pile.GetTopCard(), index); }
+            else { players[index].PlayCard();
+                if (Pile.GetTopCard().IsFaceCard()) yield return StartCoroutine("FaceCard"); else basecase = true; }
         }
-        else if (a.value == 12)
+
+        if (basecase && index == 0)
         {
-
+            faceCardIndex = numPlayers - 1;
+            player.AddToHand();
         }
-
-        //faceCardIndex = num-1 of index 
+        else if (basecase)
+        {
+            faceCardIndex = index++;
+            players[faceCardIndex].AddToHand();
+        }
+            
     }
 
     #region start
