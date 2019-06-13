@@ -19,6 +19,7 @@ public class Card : MonoBehaviour
         currentPos = null;
         currentSprite = GetComponent<SpriteRenderer>();
         currentSprite.sprite = back;
+        speed = 1f;
     }
 
     public void Flip()
@@ -56,7 +57,7 @@ public class Card : MonoBehaviour
     }
     public void Move()
     {
-        transform.position = currentPos.position;
-        transform.rotation = currentPos.rotation;
+        transform.position = Vector3.Lerp(transform.position, currentPos.position, speed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, currentPos.rotation, speed * Time.deltaTime);
     }
 }
