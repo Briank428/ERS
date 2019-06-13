@@ -30,7 +30,7 @@ public class Card : MonoBehaviour
     }
     public bool IsFaceCard()
     {
-        if (value > 10) return true;
+        if (value > 10 || value ==1) return true;
         return false;
     }
     public void SetPlayerPos(Transform t)

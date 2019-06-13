@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         slapTime = 0;
-       // isTurn = 
+        isTurn = false;
     }
     void Update()
     {
@@ -25,9 +25,9 @@ public class Player : MonoBehaviour
 
     public void Slap() {
         slapTime = Time.time; 
-        if (Pile.ValidSlap() && isFirstToSlap) Pile.PickUp(hand);
+        if (Pile.ValidSlap() && isFirstToSlap) Pile.PickUp(hand, this.gameObject.transform);
     }
     public void AddCard(Card a) { hand.Enqueue(a); }
-    public void AddToHand() { Pile.PickUp(hand); }
+    public void AddToHand() { Pile.PickUp(hand, this.gameObject.transform); }
     public int HandSize() { return hand.Count; }
 }

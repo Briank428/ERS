@@ -11,10 +11,9 @@ public class AI : MonoBehaviour
         if (Pile.ValidSlap()) return Random.Range(0.5f, 2f);
         return -1.0f;
     }
-
     public void PlayCard()
     {
-        Pile.AddToTop(hand.Dequeue()); Debug.Log("Added to pile");
+        Pile.AddToTop(hand.Dequeue()); 
     }
     public void IsEmpty()
     {
@@ -22,6 +21,6 @@ public class AI : MonoBehaviour
         else empty = false;
     }
     public void AddCard(Card a) { hand.Enqueue(a); }
-    public void AddToHand() { Pile.PickUp(hand);  }
+    public void AddToHand() { Pile.PickUp(hand, this.gameObject.transform);  }
     public int HandSize() { return hand.Count; }
 }
