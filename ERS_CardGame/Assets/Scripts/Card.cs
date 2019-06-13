@@ -8,18 +8,17 @@ public class Card : MonoBehaviour
     public static Transform pilePosition;
     [SerializeField]
     public Sprite back, front;
-    private float speed;
     private Rigidbody2D rb;
     private SpriteRenderer currentSprite;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        front = GetComponent<SpriteRenderer>().sprite;  
-        currentPos = null;
+        front = GetComponent<SpriteRenderer>().sprite;
+        oldPos = transform;
+        currentPos = transform;
         currentSprite = GetComponent<SpriteRenderer>();
         currentSprite.sprite = back;
-        speed = 1f;
     }
 
     public void Flip()
@@ -30,7 +29,7 @@ public class Card : MonoBehaviour
     }
     public bool IsFaceCard()
     {
-        if (value > 10 || value ==1) return true;
+        if (value > 10) return true;
         return false;
     }
     public void SetPlayerPos(Transform t)
@@ -57,7 +56,20 @@ public class Card : MonoBehaviour
     }
     public void Move()
     {
-        transform.position = Vector3.Lerp(transform.position, currentPos.position, speed * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, currentPos.rotation, speed * Time.deltaTime);
+        StartCoroutine(Move(oldPos,currentPos,.5f));
+    }
+
+    IEnumerator Move(Transform source, Transform target, float overTime)
+    {
+        float startTime = Time.time;
+        while (Time.time < startTime + overTime)
+        {
+            transform.position = Vector3.Lerp(source.position, target.position, (Time.time - startTime) / overTime);
+            transform.rotation = Quaternion.Lerp(source.rotation, target.rotation, (Time.time - startTime) / overTime);
+
+            yield return null;
+        }
+        transform.position = target.position;
+        transform.rotation = target.rotation;
     }
 }
