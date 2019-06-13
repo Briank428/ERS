@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Pile
 {
@@ -16,11 +17,13 @@ public class Pile
     {
         pile.Insert(0, a);
     }
-    public static void PickUp(Queue<Card> player)
+    public static void PickUp(Queue<Card> player, Transform t)
     {
         while (pile.Count != 0)
         {
             player.Enqueue(pile[0]);
+            pile[0].SetPosition(t);
+            pile[0].Flip();
             pile.RemoveAt(0);
         }
     }

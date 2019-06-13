@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
                 Card temp = Pile.GetTopCard();
 
 
-                if (Pile.ValidSlap()) { 
+                /*if (Pile.ValidSlap()) { 
                     //find minimum time of AI
                     float minAI = players[0].SlapTime(); int lowest = 0;
                     for (int j = 1; j < numPlayers-1; j++) {
@@ -82,12 +82,12 @@ public class GameManager : MonoBehaviour
                         if (minAI > tempSlap) { minAI = tempSlap; lowest = j; }
                     }
                     //Compare to player (wait until have played?)
-                    if (minAI < player.slapTime - timePlayed) { players[lowest].AddToHand(); /*animation? */ text.text = "Player " + 1 + lowest + " slapped first!"; i = lowest - 1; }
-                    else { player.AddToHand(); /*animation?*/ text.text = "You slapped first!"; i = numPlayers - 2; }
+                    if (minAI < player.slapTime - timePlayed) { players[lowest].AddToHand();  text.text = "Player " + 1 + lowest + " slapped first!"; i = lowest - 1; }
+                    else { player.AddToHand();  text.text = "You slapped first!"; i = numPlayers - 2; }
 
                     continue;
-                }
-                //if (temp.IsFaceCard()) { faceCardIndex = i; faceCardValue = temp.value;  yield return StartCoroutine("FaceCard"); i = faceCardIndex; }
+                }*/
+                if (temp.IsFaceCard()) { faceCardIndex = i; faceCardValue = temp.value;  yield return StartCoroutine("FaceCard"); i = faceCardIndex; }
             }   
         }   
     }   
@@ -95,7 +95,8 @@ public class GameManager : MonoBehaviour
     public IEnumerator FaceCard() {
         basecase = false;
         int index;
-        if (faceCardIndex == numPlayers - 1) index = 0; else index = faceCardIndex++;
+        if (faceCardIndex == numPlayers - 1) index = 0;
+        else index = faceCardIndex++;
         if (faceCardValue == 11) {
             if (index == numPlayers - 1)
             {
@@ -104,17 +105,22 @@ public class GameManager : MonoBehaviour
                 if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); }
                 else basecase = true;
             }
-            else { players[index].PlayCard();
-                if (Pile.GetTopCard().IsFaceCard()) yield return StartCoroutine("FaceCard"); else basecase = true; }
+            else {
+                yield return new WaitForSeconds(1.5f);  players[index].PlayCard(); Debug.Log("faceCard response");
+                if (Pile.GetTopCard().IsFaceCard()) yield return StartCoroutine("FaceCard");
+                else basecase = true;
+            }
         }
 
         if (basecase && index == 0)
         {
+            yield return new WaitForSeconds(1f);
             faceCardIndex = numPlayers - 1;
             player.AddToHand();
         }
         else if (basecase)
         {
+            yield return new WaitForSeconds(1f);
             faceCardIndex = index++;
             players[faceCardIndex].AddToHand();
         }
