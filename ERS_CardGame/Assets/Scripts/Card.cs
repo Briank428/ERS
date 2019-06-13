@@ -56,7 +56,7 @@ public class Card : MonoBehaviour
     }
     public void Move()
     {
-
         transform.position = currentPos.position;
+        transform.rotation = currentPos.rotation;
     }
 }

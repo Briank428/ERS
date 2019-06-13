@@ -2993,7 +2993,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931938054}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 200, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 656601263}
@@ -6536,7 +6536,6 @@ MonoBehaviour:
   text: {fileID: 575220077}
   prefabAI: {fileID: 8149255686413045170, guid: 2e22ab2d4bb758c4ba0d600bf4b00180,
     type: 3}
-  cardPrefab: {fileID: 1422442114}
   timePlayed: 0
   deck:
   - {fileID: 656601264}

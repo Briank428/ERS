@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public Text playerText;
     public Text text;
     public AI prefabAI;
-    public GameObject cardPrefab;
     public float timePlayed;
     [SerializeField]
     public List<Card> deck;
