@@ -14,7 +14,7 @@ public class AI : MonoBehaviour
 
     public void PlayCard()
     {
-        Pile.AddToTop(hand.Dequeue());
+        Pile.AddToTop(hand.Dequeue()); Debug.Log("Added to pile");
     }
     public void IsEmpty()
     {

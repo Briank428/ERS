@@ -7,6 +7,9 @@ public class Pile
 
     public static void AddToTop(Card a) { 
         pile.Add(a);
+        pile[pile.Count - 1].MoveToPile();
+        pile[pile.Count - 1].Flip();
+        if(pile.Count>=2) pile[pile.Count - 2].transform.position = new UnityEngine.Vector3(0f, 0f, -1f);
         topCard = a;
     }
     public static void AddToBottom(Card a)
