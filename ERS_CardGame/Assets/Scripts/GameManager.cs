@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
         if (!player.GetEmpty()) text.text = "YOU WIN!";
         else text.text = "YOU LOSE";
         yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene("Title");
     }   
     public IEnumerator Slap()
     {
