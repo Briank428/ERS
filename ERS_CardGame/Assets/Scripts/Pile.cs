@@ -11,6 +11,7 @@ public class Pile
         pile[pile.Count - 1].MoveToPile();
         pile[pile.Count - 1].Flip();
         if (pile.Count >= 2) pile[pile.Count - 2].gameObject.transform.position = new UnityEngine.Vector3(0f, 0f, 1f);
+        if (pile.Count >= 3) pile[pile.Count - 3].gameObject.transform.position = new Vector3(0f, 0f, 2f);
         topCard = a;
     }
     public static void AddToBottom(Card a)

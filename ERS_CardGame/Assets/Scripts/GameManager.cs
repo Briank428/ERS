@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         isOver = false;
         Card.pilePosition = GameObject.Find("Pile").transform;
         cardTable.SetActive(false);
+        text.gameObject.SetActive(false);
     }
 
     public void Deal() {
@@ -53,7 +54,6 @@ public class GameManager : MonoBehaviour
                 deck.RemoveAt(0);
             }
         }
-        Debug.Log("Player: " + player.HandSize()); for (int i = 0; i < numOpponents; i++) Debug.Log("Opponent " + i + 1 + ": " + players[i].HandSize());
         StartCoroutine(Game());
     }
 
@@ -68,9 +68,8 @@ public class GameManager : MonoBehaviour
                     player.isTurn = true; Debug.Log("Player turn");
                     while (!Input.GetKeyDown(KeyCode.Mouse0))
                         yield return null;
-                    }
+                }
                 else { yield return new WaitForSeconds(1.5f); players[i].PlayCard(); }
-                Debug.Log("Player #" + i+ "'s Value: " + Pile.GetTopCard().value);
                 Card temp = Pile.GetTopCard();
 
 
@@ -95,8 +94,8 @@ public class GameManager : MonoBehaviour
     public IEnumerator FaceCard() {
         basecase = false;
         int index;
-        if (faceCardIndex == numPlayers - 1) index = 0;
-        else index = faceCardIndex++;
+        if (faceCardIndex == numPlayers - 1)  index = 0; 
+        else index = faceCardIndex+1; Debug.Log("Player " + faceCardIndex + " played Face Card; player " + index + " will respond");
         if (faceCardValue == 11) {
             if (index == numPlayers - 1)
             {
@@ -106,23 +105,110 @@ public class GameManager : MonoBehaviour
                 else basecase = true;
             }
             else {
-                yield return new WaitForSeconds(1.5f);  players[index].PlayCard(); Debug.Log("faceCard response");
-                if (Pile.GetTopCard().IsFaceCard()) yield return StartCoroutine("FaceCard");
+                yield return new WaitForSeconds(1.5f);  players[index].PlayCard();
+                if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); }
                 else basecase = true;
             }
         }
-
+        else if (faceCardValue == 12)
+        {
+            if (index == numPlayers - 1)
+            {
+                int count = 0;
+                while (count < 2)
+                {
+                    yield return new WaitForSeconds(0.5f);  player.isTurn = true; while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                    Debug.Log("Iterated through " + count + " time/s");
+                }
+                if (count == 2) basecase = true;
+            }
+            else
+            {
+                int count = 0;
+                while (count<2)
+                {
+                    yield return new WaitForSeconds(1.5f); players[index].PlayCard();
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                }
+                if (count == 2) basecase = true;
+            }
+        }
+        else if (faceCardValue == 13)
+        {
+            if (index == numPlayers - 1)
+            {
+                int count = 0;
+                while (count < 3)
+                {
+                    yield return new WaitForSeconds(0.5f); player.isTurn = true; while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                }
+                if (count == 3) basecase = true;
+            }
+            else
+            {
+                int count = 0;
+                while (count < 3)
+                {
+                    yield return new WaitForSeconds(1.5f); players[index].PlayCard();
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                }
+                if (count == 3) basecase = true;
+            }
+        }
+        else if (faceCardValue == 1)
+        {
+            if (index == numPlayers - 1)
+            {
+                int count = 0;
+                while (count < 4)
+                {
+                    yield return new WaitForSeconds(0.5f); player.isTurn = true; while (!Input.GetKeyDown(KeyCode.Mouse0)) yield return null;
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                }
+                if (count == 4) basecase = true;
+            }
+            else
+            {
+                int count = 0;
+                while (count < 4)
+                {
+                    yield return new WaitForSeconds(1.5f); players[index].PlayCard();
+                    if (Pile.GetTopCard().IsFaceCard()) { faceCardIndex = index; faceCardValue = Pile.GetTopCard().value; yield return StartCoroutine("FaceCard"); break; }
+                    count++;
+                }
+                if (count == 4) basecase = true;
+            }
+        }
         if (basecase && index == 0)
         {
             yield return new WaitForSeconds(1f);
             faceCardIndex = numPlayers - 1;
             player.AddToHand();
+            faceCardIndex--;
+            basecase = false;
+        }
+        else if (basecase && index == 1 )
+        {
+            yield return new WaitForSeconds(1f);
+            faceCardIndex = index -1 ;
+            players[faceCardIndex].AddToHand();
+            faceCardIndex = numPlayers - 1;
+            basecase = false;
         }
         else if (basecase)
         {
             yield return new WaitForSeconds(1f);
-            faceCardIndex = index++;
+            faceCardIndex = index - 1;
             players[faceCardIndex].AddToHand();
+            faceCardIndex--;
+            basecase = false;
         }
             
     }
@@ -131,6 +217,7 @@ public class GameManager : MonoBehaviour
     public void StartGameOne() {
         numOpponents = 1; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        text.gameObject.SetActive(true);
         cardTable.SetActive(true);
         players.Add(GameObject.Find("Two Person").GetComponent<AI>());
         Destroy(GameObject.Find("Three Person"));
@@ -140,6 +227,7 @@ public class GameManager : MonoBehaviour
     public void StartGameTwo() {
         numOpponents = 2; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        text.gameObject.SetActive(true);
         cardTable.SetActive(true);
         Destroy(GameObject.Find("Two Person"));
         Destroy(GameObject.Find("Four Person"));
@@ -150,11 +238,12 @@ public class GameManager : MonoBehaviour
     public void StartGameThree() {
         numOpponents = 3; numPlayers = numOpponents + 1;
         one.gameObject.SetActive(false); two.gameObject.SetActive(false); three.gameObject.SetActive(false); playerText.gameObject.SetActive(false);
+        text.gameObject.SetActive(true);
         cardTable.SetActive(true);
         Destroy(GameObject.Find("Three Person"));
-        players.Add(GameObject.Find("4 Players - 1").GetComponent<AI>());
-        players.Add(GameObject.Find("Two Person").GetComponent<AI>());
         players.Add(GameObject.Find("4 Players - 3").GetComponent<AI>());
+        players.Add(GameObject.Find("Two Person").GetComponent<AI>());
+        players.Add(GameObject.Find("4 Players - 1").GetComponent<AI>());
         Deal();
     }
     #endregion
