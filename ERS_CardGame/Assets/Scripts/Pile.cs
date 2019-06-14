@@ -15,6 +15,12 @@ public class Pile
         if (pile.Count >= 3) pile[pile.Count - 3].gameObject.transform.position = new Vector3(0f, 0f, 2f);
         topCard = a;
     }
+    public static void Burn(Card a)
+    {
+        pile.Insert(0, a);
+        pile[0].SetPosition(GameObject.Find("DecoyPile").transform);
+        pile[0].Move(); pile[0].Flip();
+    }
     public static void AddToBottom(Card a)
     {
         pile.Insert(0, a);

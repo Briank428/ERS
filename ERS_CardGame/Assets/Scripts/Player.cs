@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
         }
     }
     public void Slap() {
+        if (!Pile.ValidSlap()) Pile.Burn(hand.Dequeue());
         if (slapTime < GameManager.timePlayed) slapTime = Time.time;
     }
     public void AddCard(Card a) { hand.Enqueue(a); }
