@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Pile
 {
     private static List<Card> pile = new List<Card>();
     private static Card topCard;
-
     public static void AddToTop(Card a) {
         pile.Add(a);
         pile[pile.Count - 1].MoveToPile();
         pile[pile.Count - 1].Flip();
-        if (pile.Count >= 2) pile[pile.Count - 2].gameObject.transform.position = new UnityEngine.Vector3(0f, 0f, 1f);
+        GameManager.timePlayed = Time.time;
+        if (pile.Count >= 2) pile[pile.Count - 2].gameObject.transform.position = new Vector3(0f, 0f, 1f);
         if (pile.Count >= 3) pile[pile.Count - 3].gameObject.transform.position = new Vector3(0f, 0f, 2f);
         topCard = a;
     }
